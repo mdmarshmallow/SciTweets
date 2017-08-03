@@ -96,7 +96,11 @@ public class Filter {
 					}
 				}
 			}
+<<<<<<< HEAD
+			if (matchCounter > 4) {
+=======
 			if (matchCounter > 7) {
+>>>>>>> ae706e2fec0a13209acf8101b663362c00b06e1d
 				return true;
 			}
 		}

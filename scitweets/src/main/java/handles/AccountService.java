@@ -8,6 +8,20 @@ import java.util.List;
 import dbconnection.DBConnect;
 
 public class AccountService {
+<<<<<<< HEAD
+	private static List<Account> accounts = new ArrayList<Account>();
+	static {
+		/* in order to add a new account, just copy and paste the line below and
+		 replace the name and username*/
+		accounts.add(new Account("Stand Up To Cancer", "@SU2C"));
+		accounts.add(new Account("Broad Institute", "@broadinstitute"));
+		accounts.add(new Account("Node.js", "@nodejs"));
+		accounts.add(new Account("Nature BIOTECH", "@NatureBiotech"));
+		accounts.add(new Account("Nasa", "@Nasa"));
+		accounts.add(new Account("Jetstrap", "@jetstrap"));
+	}
+=======
+>>>>>>> ae706e2fec0a13209acf8101b663362c00b06e1d
 
 	private List<Account> getAccountsFromDb() throws IOException {
 		List<Account> accounts = new ArrayList<Account>();
