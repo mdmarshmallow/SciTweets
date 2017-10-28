@@ -2,6 +2,7 @@ package handles;
 
 import java.util.Arrays;
 
+//defines a Category object
 public class Category {
 	private String categoryName;
 	private Account[] accounts;
