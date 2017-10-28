@@ -115,13 +115,15 @@ public class Filter {
 					}
 				}
 			}
+			//number of words that the article contains that are in the filter, the higher the number the more selective
 			if (matchCounter > 7) {
 				return true;
 			}
 		}
 		return false;
 	}
-
+	
+	//checks if the article has returned anything, and if so, runs it through the checkArticle function
 	public static boolean checkTweet(String urlInput) throws IOException {
 		List<String> article = retrieveArticle(urlInput);
 		if (article.size() != 0) {
