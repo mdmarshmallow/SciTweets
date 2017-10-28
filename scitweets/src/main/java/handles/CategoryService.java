@@ -36,6 +36,7 @@ public class CategoryService {
 		return resultlist;
 	}
 
+	//works in the same way as the sortHandlesByAlphabet function in the AccountService class
 	private List<String[]> sortCategoriesByAlphabet(List<String[]> categories) {
 		List<String> categoriesToSort = new ArrayList<String>();
 		List<String[]> finalCategories = new ArrayList<String[]>();
