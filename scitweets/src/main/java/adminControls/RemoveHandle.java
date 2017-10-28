@@ -13,6 +13,7 @@ import dbconnection.DBConnect;
 
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/removehandle")
+//this is almost the exact same as RemoveCategory.java except categories are replaced by handles
 public class RemoveHandle extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{

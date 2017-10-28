@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+//Redirects user to the about.jsp page
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/about")
 public class AboutServlet extends HttpServlet{
