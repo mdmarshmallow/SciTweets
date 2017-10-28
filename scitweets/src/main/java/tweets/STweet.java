@@ -1,5 +1,6 @@
 package tweets;
 
+//creates an object to hold all the the tweet information
 public class STweet {
 	private String username;
 	private String tweet;
