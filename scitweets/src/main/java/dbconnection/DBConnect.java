@@ -12,6 +12,7 @@ import java.util.List;
 
 import properties.RetrieveProperties;
 
+//this class contains all the functions that interact with the database
 public class DBConnect {
 
 	static RetrieveProperties rp = new RetrieveProperties();
