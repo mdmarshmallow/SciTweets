@@ -8,6 +8,7 @@ import java.util.Properties;
 
 public class RetrieveProperties {
 
+	//function gets a property from a given filename and property name
 	private String getProperties(String filename, String property) throws IOException {
 		File configFile = new File(getClass().getClassLoader().getResource(filename).getFile());
 		FileReader reader = new FileReader(configFile);
@@ -16,6 +17,7 @@ public class RetrieveProperties {
 		return prop.getProperty(property);
 	}
 
+	//these functions make it easier to get properties without having to type in the specific filename and property name
 	public String getAylienKey() throws FileNotFoundException, IOException {
 		return getProperties("Aylien.properties", "KEY");
 	}
