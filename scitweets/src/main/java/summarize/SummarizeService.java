@@ -15,6 +15,7 @@ public class SummarizeService {
 
 	static RetrieveProperties rp = new RetrieveProperties();
 
+	//uses the Aylien API to summarize an article given the url
 	public static String summarize(String urlInput, int numOfSentences)
 			throws FileNotFoundException, IOException, MalformedURLException, TextAPIException {
 		TextAPIClient client = new TextAPIClient(rp.getAylienAppID(), rp.getAylienKey());
@@ -24,6 +25,7 @@ public class SummarizeService {
 		builder.setNumberOfSentences(numOfSentences);
 		Summarize summary = null;
 		summary = client.summarize(builder.build());
+		//the summarizer returns the summary in an array, this just joins that array into a String
 		String finalSummary =  String.join(",", summary.getSentences()).replaceAll(",", " ");
 		return finalSummary;
 	}
