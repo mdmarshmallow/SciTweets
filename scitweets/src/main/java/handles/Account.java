@@ -1,5 +1,6 @@
 package handles;
 
+//creates the object that holds the handle information
 public class Account {
 	private String name;
 	private String username;
