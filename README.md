@@ -15,14 +15,14 @@ tweetModeExtended=true
 It is placed in the resources folder.
 
 ## Aylien.properties
-This app uses Aylien for analysing link tweets. In order to use it, create and Aylien.properties file and fill in your information.
+This app uses Aylien for analysing link tweets. In order to use it, create an Aylien.properties file and fill in your information. This is placed in the resources folder.
 ```
 APP_ID=***********
 KEY=**************************
 ```
 
 ## AdminCredentials.properties
-In order to use the admin controls for this website, you need to create and AdminCredentials.properties file. The file should look like this:
+In order to use the admin controls for this website, you need to create an AdminCredentials.properties file and put it in the resources folder. The file should look like this:
 ```
 Username=[username]
 Password=[password]
