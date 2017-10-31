@@ -33,7 +33,7 @@ This file can be placed next to the Aylien.properties file in the resources fold
 This file is included in github. However, you will need to change your username and password as well as the db url to match whatever you have setup.
 
 ## Setting up the database
-The database has changed quite a bit. I might upload the .sql file later, but as of now, you may be able to figure it out without the database. 
+A sql file that will create an empty database is uploaded. 
 
 ## Modifying the filter
 An easy way to change the bahaviour of this webapp is to modify the wordlist contained in Filter.txt. By adding words to it, the filter will become better and more accurate. Of course, there are other ways of filtering the tweets that are probably much better, but for now, changing the Filter.txt file is the easiest way to improve the filter itself without having to completely rewrite the whole thing.
