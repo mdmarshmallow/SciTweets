@@ -64,9 +64,11 @@ public class TweetService {
 						//gets the summary stored in the database and the isValid boolean
 						String description = DBConnect.selectFromLinkcache(url)[1];
 						boolean isValid = DBConnect.checkIsValid(url);
-						//if isValid and the summary isn't already on the page, the tweets is added to the list of tweets to display
+						/*if isValid and the summary isn't already on the page, the tweets is 
+						added to the list of tweets to display*/
 						if (isValid && !summariesOnPage.contains(description)) {
-							tweets.add(new STweet(user.getName(), statusText, url, description, month, year));
+							tweets.add(new STweet(user.getName(), statusText, url, 
+									      description, month, year));
 							//these two are arrays that help avoid duplicate tweets/urls/summaries
 							urlsOnPage.add(url);
 							summariesOnPage.add(description);
@@ -75,8 +77,10 @@ public class TweetService {
 					} else if (Filter.checkTweet(url)) {
 						//gets a 4 sentence long summary
 						String description = SummarizeService.summarize(url, 4);
-						//if the summary isn't empty and the tweets that will be displayed don't already have the same summary
-						if (description != null && !description.isEmpty() && !summariesOnPage.contains(description)) {
+						/*if the summary isn't empty and the tweets that will be displayed don't already
+						have the same summary*/
+						if (description != null && !description.isEmpty() && 
+						    !summariesOnPage.contains(description)) {
 							//adds the information to the ArrayList
 							tweets.add(new STweet(user.getName(), statusText, url, description, month, year));
 							//stores the information in the database
