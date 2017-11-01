@@ -51,7 +51,8 @@ public class CustomSearchServlet extends HttpServlet {
 					if (Filter.hasURL(status)) {
 						url = status.getURLEntities()[0].getExpandedURL();
 						String statusText = ModifyTweet.deleteSecondURL(status.getText());
-						//gets the date of the Tweet's creation, this isn't displayed on the JSP but it's still used in the STweet object 
+						//gets the date of the Tweet's creation 
+						//this isn't displayed on the JSP but it's still used in the STweet object 
 						Date date = status.getCreatedAt();
 						Calendar calendar = Calendar.getInstance();
 						calendar.setTime(date);
