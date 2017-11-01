@@ -24,7 +24,8 @@ public class AdminLoginRequired implements Filter {
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
-		//if the username is in the session, it will allow the request to go through, if not, the user will be forwarded to the admin login page
+		/*if the username is in the session, it will allow the request to go through, if not, the user will be 
+		forwarded to the admin login page*/
 		if (request.getSession().getAttribute("username") != null) {
 			chain.doFilter(servletRequest, servletResponse);
 		} else {
