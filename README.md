@@ -39,5 +39,5 @@ A sql file that will create an empty database is uploaded.
 An easy way to change the bahaviour of this webapp is to modify the wordlist contained in Filter.txt. By adding words to it, the filter will become better and more accurate. Of course, there are other ways of filtering the tweets that are probably much better, but for now, changing the Filter.txt file is the easiest way to improve the filter itself without having to completely rewrite the whole thing.
 
 ## Credits
-Marc D'Mello - Wrote the backend (Java), set up the database, some HTML and javascript
+Marc D'Mello - Wrote the backend (Java), set up the database, some HTML and javascript <br/>
 Adith Arun - Wrote the CSS, some HTML
