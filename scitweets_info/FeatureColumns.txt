@@ -1,0 +1,6 @@
+Feature columns
+
+Number of words (WC)
+Number of words on word list in the article (SWC)
+Average length of words (AWL)
+Density of scientific words (SWD)

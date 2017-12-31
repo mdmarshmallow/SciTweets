@@ -39,3 +39,8 @@ scitweets/src/main/resources/twitter4j.properties
 scitweets/src/main/resources/Aylien.properties
 >>>>>>> feature/Filter
 scitweets/src/main/resources/AdminCredentials.properties
+scitweets_info/ConstructorProgram/RemoteSystemsTempFiles/.project
+scitweets_info/ConstructorProgram/trainingsetConstructor/target/classes/META-INF/maven/com.mdmarshmallow/trainingsetConstructor/pom.properties
+scitweets_info/ConstructorProgram/trainingsetConstructor/target/classes/META-INF/MANIFEST.MF
+scitweets_info/ConstructorProgram/trainingsetConstructor/.settings/org.eclipse.m2e.core.prefs
+scitweets_info/ConstructorProgram/trainingsetConstructor/.settings/org.eclipse.jdt.core.prefs
