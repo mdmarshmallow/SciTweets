@@ -45,4 +45,8 @@ public class RetrieveProperties {
 	public String getDBPass() throws IOException {
 		return getProperties("DBCredentials.properties", "dbPassword");
 	}
+	
+	public String getSciTweetsModelPath() throws IOException {
+		return getProperties("scitweets_model.properties", "scitweets_model_path");
+	}
 }

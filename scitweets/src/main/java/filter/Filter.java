@@ -5,18 +5,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
+import java.nio.FloatBuffer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.net.ssl.SSLHandshakeException;
-
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.tensorflow.SavedModelBundle;
+import org.tensorflow.Session;
+import org.tensorflow.Tensor;
 
+import properties.RetrieveProperties;
 //wrapper for the Twitter API
 import twitter4j.Status;
 import twitter4j.URLEntity;
@@ -24,7 +26,10 @@ import twitter4j.URLEntity;
 //this class has all the functions that identify if a Tweet contains a study
 public class Filter {
 
-	//checks to see if a tweet has a url using the Twitter4j URLEntity object and the getURLEntities function
+	static RetrieveProperties rp = new RetrieveProperties();
+
+	// checks to see if a tweet has a url using the Twitter4j URLEntity object
+	// and the getURLEntities function
 	public static boolean hasURL(Status status) {
 		URLEntity[] url = status.getURLEntities();
 		if (url.length != 0) {
@@ -34,103 +39,106 @@ public class Filter {
 		}
 	}
 
-	//function retrieves the article and returns it as an ArrayList for easier analysis
-	private static List<String> retrieveArticle(String urlInput) throws IOException {
-		final String SPECIALCHAR_REGEX = "[^a-z0-9 ]";
+	// function retrieves the article and returns it as an ArrayList for easier
+	// analysis
+	private static String retrieveArticle(String urlInput) throws IOException {
 		try {
 			Document webpage = Jsoup.connect(urlInput).timeout(10 * 1000).ignoreContentType(true)
 					.validateTLSCertificates(false).get();
-			String article = webpage.body().toString();
-			String[] parsedArticle = Jsoup.parse(article).toString().split("\\s+");
-			Pattern p = Pattern.compile(SPECIALCHAR_REGEX, Pattern.CASE_INSENSITIVE);
-			List<String> cleanedArticle = new ArrayList<String>();
-			for (String word : parsedArticle) {
-				Matcher m = p.matcher(word);
-				if (!m.find()) {
-					cleanedArticle.add(word);
-				}
-			}
-			return cleanedArticle;
-		/*multiple catches for each error, not needed right now but will make it easier if error handling is implemented
-			in the future for any of these errors*/
-		//I found that this error is returned when there is a paywall on the article
+			String article = webpage.body().text();
+			return article;
+			/*
+			 * multiple catches for each error, not needed right now but will
+			 * make it easier if error handling is implemented in the future for
+			 * any of these errors
+			 */
+			// I found that this error is returned when there is a paywall on
+			// the article
 		} catch (HttpStatusException e) {
-			List<String> InvalidArticle = new ArrayList<String>();
-			InvalidArticle.add("paywall");
-			return InvalidArticle;
-		//when Jsoup takes too long to connect to the url
+			return "paywall";
+			// when Jsoup takes too long to connect to the url
 		} catch (SocketTimeoutException e) {
-			List<String> InvalidArticle = new ArrayList<String>();
-			InvalidArticle.add("timeout");
-			return InvalidArticle;
-		//I'm not really sure what causes a SocketException, hence the generic 'badURL'
+			return "timeout";
+			// I'm not really sure what causes a SocketException, hence the
+			// generic 'badURL'
 		} catch (SocketException e) {
-			List<String> InvalidArticle = new ArrayList<String>();
-			InvalidArticle.add("badURL");
-			return InvalidArticle;
-		//Again, not really sure what happens with an SSL handshake
+			return "badURL";
+			// Again, not really sure what happens with an SSL handshake
 		} catch (SSLHandshakeException e) {
-			List<String> InvalidArticle = new ArrayList<String>();
-			InvalidArticle.add("SSLHandshakeException");
-			return InvalidArticle;
-		//catch for all other exceptions
+			return "SSLHandshakeException";
+			// catch for all other exceptions
 		} catch (Exception e) {
-			List<String> InvalidArticle = new ArrayList<String>();
-			InvalidArticle.add("Other Issue");
-			return InvalidArticle;
+			return "Other Issue";
 		}
 	}
 
-	//this is where the filtering actually happens, it takes in the article in the form of an ArrayList
-	private static boolean checkArticle(List<String> article) throws FileNotFoundException {
-		List<String> filterWords = new ArrayList<String>();
-		List<String> tempArray = new ArrayList<String>();
-		int matchCounter = 0;
-		//gets the FilterWords.txt file which contains words that would occur in a study
+	// this function gets information from the article to put into the DNN classifier
+	private static Map<String, Float> preProcessing(String article) throws FileNotFoundException {
+		// splits the article into an array then gets the word count
+		String[] wcArray = article.split("\\s+");
+		float articleWC = wcArray.length;
+		// loads the FilterWord.txt file to be used
 		ClassLoader cs = new Filter().getClass().getClassLoader();
 		File filterWordsFile = new File(cs.getResource("FilterWords.txt").getFile());
 		Scanner scan = new Scanner(filterWordsFile);
-		//loads the FilterWords.txt file into an ArrayList we can use
+		// checks how many words in the article are on the FilterWords file
+		float wordCounter = 0;
 		while (scan.hasNextLine()) {
 			String word = scan.nextLine();
-			if (!word.isEmpty() || !word.contains("<")) {
-				filterWords.add(word);
+			if (article.toLowerCase().contains(word.toLowerCase()) && !word.isEmpty()) {
+				wordCounter++;
 			}
 		}
 		scan.close();
-		//cross checks each word in the article to the words in the FilterWords
-		for (String wordInArticle : article) {
-			/*takes out all the spaces in and converts all the letters to lowercase, this will make sure that
-			false negatives won't occur*/
-			wordInArticle = wordInArticle.toLowerCase().replaceAll("\\s+", "").replaceAll("[^a-zA-Z0-9]", "");
-			//the if loop stops repeated words from being checked each time the word is repeated
-			if (!tempArray.contains(wordInArticle)) {
-				tempArray.add(wordInArticle);
-				//goes through all the words in the filter and cross checks it
-				for (String wordInFilter : filterWords) {
-					wordInFilter.toLowerCase().replaceAll("\\s+", "");
-					if (wordInArticle.equalsIgnoreCase(wordInFilter)) {
-						matchCounter++;
-						break;
-					}
-				}
-			}
-			//number of words that the article contains that are in the filter, the higher the number the more selective
-			if (matchCounter > 7) {
-				return true;
-			}
-		}
-		return false;
+		// finds the average word length
+		String characterCounter = article.replaceAll("\\s+", "");
+		float numCharacters = characterCounter.length();
+		float meanWordLength = numCharacters / articleWC;
+		// finds what percent of the article is scientific
+		float sciWordDensity = wordCounter / articleWC;
+		// creates a mapping and returns it
+		Map<String, Float> data = new HashMap<String, Float>();
+		// SWC = scientific word count
+		data.put("SWC", wordCounter);
+		// WC = the article word count
+		data.put("WC", articleWC);
+		// AWL = the average word length
+		data.put("AWL", meanWordLength);
+		// SWD = the scientific word density
+		data.put("SWD", sciWordDensity);
+		return data;
 	}
-	
-	//checks if the article has returned anything, and if so, runs it through the checkArticle function
+
+	// runs the the data from the map through a DNN Classifier (trained in TensorFlow)
+	private static boolean checkArticle(Map<String, Float> data) throws IOException {
+		try (SavedModelBundle bundle = SavedModelBundle.load(rp.getSciTweetsModelPath(), "serve")) {
+			Session session = bundle.session();
+			//creates tensors to input into the model
+			Tensor<?> SWC = Tensor.create(new long[] { 1, 1 }, FloatBuffer.wrap(new float[] { data.get("SWC") }));
+			Tensor<?> WC = Tensor.create(new long[] { 1, 1 }, FloatBuffer.wrap(new float[] { data.get("WC") }));
+			Tensor<?> AWL = Tensor.create(new long[] { 1, 1 }, FloatBuffer.wrap(new float[] { data.get("AWL") }));
+			Tensor<?> SWD = Tensor.create(new long[] { 1, 1 }, FloatBuffer.wrap(new float[] { data.get("SWD") }));
+			//feeds each tensor in and retrieves the output
+			List<Tensor<?>> outputs = session.runner().feed("Placeholder_2:0", AWL).feed("Placeholder:0", SWC)
+					.feed("Placeholder_3:0", SWD).feed("Placeholder_1:0", WC)
+					.fetch("dnn/head/predictions/probabilities:0").run();
+			float[][] scores = new float[1][2];
+			outputs.get(0).copyTo(scores);
+			System.out.println(scores[0][1]);
+			//maps the output to true or false
+			int finalScore = Math.round(scores[0][1]);
+			return (finalScore == 1) ? true : false;
+		}
+	}
+
+	// checks if the article has returned anything, and if so, runs it through the checkArticle function
 	public static boolean checkTweet(String urlInput) throws IOException {
-		List<String> article = retrieveArticle(urlInput);
-		if (article.size() != 0) {
-			if (!article.get(0).equals("paywall") && !article.get(0).equals("timeout")
-					&& !article.get(0).equals("badURL") && !article.get(0).equals("SSLHandshakeException")
-					&& !article.get(0).equals("Other Issue")) {
-				return checkArticle(article);
+		String article = retrieveArticle(urlInput);
+		if (article.length() != 0) {
+			if (!article.equals("paywall") && !article.equals("timeout") && !article.equals("badURL")
+					&& !article.equals("SSLHandshakeException") && !article.equals("Other Issue")) {
+				Map<String, Float> dataMapping = preProcessing(article);
+				return checkArticle(dataMapping);
 			} else {
 				return false;
 			}
