@@ -40,7 +40,14 @@ A sql file that will create an empty database is uploaded.
 
 ## scitweets_info
 This folder contains files that aren't used in the website itself, but were used to create SciTweets. The following folders and files within scitweets_info are listed:
-### SciTweetsClassifier
+  * SciTweetsClassifier:
+    * scitweets_classifier.py: This program contains Python code for training, evaluating, and finally saving the DNN classfier so it can be used by Java in the main website. I used the TensorFlow estimator API to write this code.
+    * scitweets_train.csv: This is a list of data from 200 URLs. It includes word count, average word length, the number of words in the article that correspond with the words in the FilterWords.txt file, and the percentage of those same words. It also contains a results column to tell the Neural Net 
+    * urllist.txt: Contains a list of URLs that correspond with the data in scitweets_train.csv
+    * scitweets_test.csv: A similar dataset to scitweets_train.csv, except it contains data for different URLs and is much smaller. It was used for evaluating the DNN classifier.
+    * urltestlist.txt: Contains a list of URLs that corresponds with the data in scitweets_test.csv
+    * FeatureColumns.txt: This file just has the definitions for the abbreviations used in the CSV files.
+  * scitweetsdb.sql: The sql file mentioned in the previous section.
 
 ## Modifying the filter
 An easy way to change the bahaviour of this webapp is to modify the wordlist contained in Filter.txt. By adding words to it, the filter will become better and more accurate. Of course, there are other ways of filtering the tweets that are probably much better, but for now, changing the Filter.txt file is the easiest way to improve the filter itself without having to completely rewrite the whole thing.
