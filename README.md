@@ -32,6 +32,9 @@ This file can be placed next to the Aylien.properties file in the resources fold
 ## DBCredentials.properties
 This file is included in github. However, you will need to change your username and password as well as the db url to match whatever you have setup.
 
+## scitweets_model.properties
+This file stores the disk location of the saved DNNClassifier model. You will need to edit it based on where this project is downloaded.
+
 ## Setting up the database
 A sql file that will create an empty database is uploaded. 
 
