@@ -2,6 +2,9 @@
 ------------
 Find the site on <a href="http://www.scitweets.com">scitweets.com</a>
 
+## What is SciTweets?
+SciTweets is a website that looks at the Twitter timelines of prominent scientists and scientific orgnaizations, and then finds tweets that link to articles. Using a neural net classifier, SciTweets then sorts these links out between scientific and non-scientific, and displays the summaries of those articles along with a link to the actual article.
+
 ## Twitter4j.properties
 A twitter4j.properties file is required for this project. The reason it's not included is because it contains sensitive information such as the accesstoken and other things that the app requires to access the twitter APIs. The file is set up as follows:
 ```
@@ -53,7 +56,7 @@ This folder contains files that aren't used in the website itself, but were used
 An easy way to change the bahaviour of this webapp is to modify the wordlist contained in `FilterWords.txt`. By adding words to it, the filter will be more sensitive to scientific articles. However, if the changes are significant enough, it is also possible that you might need to retrain the the neural net so that it accounts for these changes.
 
 However, another way to change the filter would be to modify the neural net itself.  There are countless ways to modify the neural net, from taking in new or different features, to changing the number of hidden layers and neurons in those hidden layers. However, if you do change the neural net, there will be several changes that you will need to make SciTweets itself for the changes to take effect:
- 1. Change the `saved_model` folder located in `src/main/resources` with the new one created by your modifed model. You will be able to find the new one in the path defined in the `classifier.export_savedmodel()` function.
+ 1. Exchange the `saved_model` folder located in `src/main/resources` with the new one created by your modifed model. You will be able to find the new one in the path defined in the `classifier.export_savedmodel()` function.
  2. Change the input and output tensor names in `.fetch()` and `.feed()` functions in the Filter class. You can find the new input and output names by inspecting the saved model by using `saved_model_cli` in the command line. For more information on this, check [this link](https://www.tensorflow.org/programmers_guide/saved_model#cli_to_inspect_and_execute_savedmodel) out.
  3. Change the `preProcessing()` and `checkArticle()` functions in the Filter class appropriately to fit whatever features you may have changed.
 
