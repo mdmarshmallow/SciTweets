@@ -50,13 +50,17 @@ This folder contains files that aren't used in the website itself, but were used
   * `scitweetsdb.sql`: The sql file mentioned in the previous section.
 
 ## Modifying the filter
-An easy way to change the bahaviour of this webapp is to modify the wordlist contained in Filter.txt. By adding words to it, the filter will be more sensitive to scientific articles. However, if the changes are significant enough, it is also possible that you might need to retrain the the neural net so that it accounts for these changes.
+An easy way to change the bahaviour of this webapp is to modify the wordlist contained in `FilterWords.txt`. By adding words to it, the filter will be more sensitive to scientific articles. However, if the changes are significant enough, it is also possible that you might need to retrain the the neural net so that it accounts for these changes.
 
 However, another way to change the filter would be to modify the neural net itself.  There are countless ways to modify the neural net, from taking in new or different features, to changing the number of hidden layers and neurons in those hidden layers. However, if you do change the neural net, there will be several changes that you will need to make SciTweets itself for the changes to take effect:
  1. Change the `saved_model` folder located in `src/main/resources` with the new one created by your modifed model. You will be able to find the new one in the path defined in the `classifier.export_savedmodel()` function.
- 2. Change the input and output tensor names in `.fetch()` and `.feed()` functions in the Filter class. You can find the new input and output names by inspecting them using `saved_model_cli` in the command line. For more information on this, check [this link](https://www.tensorflow.org/programmers_guide/saved_model#cli_to_inspect_and_execute_savedmodel) out.
+ 2. Change the input and output tensor names in `.fetch()` and `.feed()` functions in the Filter class. You can find the new input and output names by inspecting the saved model by using `saved_model_cli` in the command line. For more information on this, check [this link](https://www.tensorflow.org/programmers_guide/saved_model#cli_to_inspect_and_execute_savedmodel) out.
  3. Change the `preProcessing()` and `checkArticle()` functions in the Filter class appropriately to fit whatever features you may have changed.
 
+## Future plans
+1. The main problem with SciTweets right now is slow loading speeds. There area few ways I can think of solving this. First, I can change the number of hidden layers in the neural net to reduce processing time. However, I think that the preprocessing step takes the most time. To change the preprocessing step, I'll need to change the feature columns in the neural net. This is the first iteration of the neural net so whatever I do, there'll be some pretty big changes to it. 
+2. Once I've gotten the speed issue taken care of, I would like to try adding a sensitivity filter so that the user can change the sensitivity to their liking. Currently, if a the classifier is only 45% confident that a link is scientific, it won't show up on the website. However, if the user can adjust the sensitivity level to say, 40%, then that link will show up.
+
 ## Credits
-Marc D'Mello - Wrote the backend (Java), set up the database, some HTML and javascript <br/>
+Marc D'Mello - Wrote the backend (Java), set up the database, some HTML and javascript. Wrote and trained the neural net. <br/>
 Adith Arun - Wrote the CSS, some HTML
