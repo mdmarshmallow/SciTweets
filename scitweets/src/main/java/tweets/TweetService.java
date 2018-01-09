@@ -80,7 +80,7 @@ public class TweetService {
 						description = SummarizeService.summarize(url, 4);
 						/*if the summary isn't empty and the tweets that will be displayed don't already
 						have the same summary*/
-						if (description != null && !description.isEmpty() && 
+						if (description != null && description.split(" ").length != 0 && 
 						    !summariesOnPage.contains(description)) {
 							//adds the information to the ArrayList
 							tweets.add(new STweet(user.getName(), statusText, url, description, month, year));
