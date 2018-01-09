@@ -60,9 +60,10 @@ public class TweetService {
 					int year = calendar.get(Calendar.YEAR);
 					int authorId = DBConnect.selectAuthorId(username);
 					//checks if the url is already in the database
+					String description = "";
 					if (DBConnect.selectFromLinkcache(url) != null) {
 						//gets the summary stored in the database and the isValid boolean
-						String description = DBConnect.selectFromLinkcache(url)[1];
+						description = DBConnect.selectFromLinkcache(url)[1];
 						boolean isValid = DBConnect.checkIsValid(url);
 						/*if isValid and the summary isn't already on the page, the tweets is 
 						added to the list of tweets to display*/
@@ -76,7 +77,7 @@ public class TweetService {
 					//if it isn't in the database, runs the tweet through the filter
 					} else if (Filter.checkTweet(url)) {
 						//gets a 4 sentence long summary
-						String description = SummarizeService.summarize(url, 4);
+						description = SummarizeService.summarize(url, 4);
 						/*if the summary isn't empty and the tweets that will be displayed don't already
 						have the same summary*/
 						if (description != null && !description.isEmpty() && 
