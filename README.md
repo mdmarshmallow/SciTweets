@@ -1,6 +1,5 @@
 # SciTweets
 ------------
-Find the site on <a href="http://www.scitweets.com">scitweets.com</a>
 
 ## What is SciTweets?
 SciTweets is a website that looks at the Twitter timelines of prominent scientists and scientific orgnaizations, and then finds tweets that link to articles. Using a neural net classifier, SciTweets then sorts these links out between scientific and non-scientific, and displays the summaries of those articles along with a link to the actual article.
